@@ -2,22 +2,12 @@
 require_once 'Database.php';
 require_once 'BlogManager.php';
 
-// Загрузка конфигурации
 $config = require 'config.php';
-
-// Подключение к базе данных
 $db = new Database($config['host'], $config['dbname'], $config['username'], $config['password']);
-
-// Проверка и создание таблиц, если они отсутствуют
 $db->executeSchema('schema.sql');
-
-// Создание менеджера блога
 $blogManager = new BlogManager($db);
-
-// Загрузка данных в базу при загрузке страницы
 $loadResult = $blogManager->loadData();
 
-// Подготовка для поиска
 $results = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $results = $blogManager->search($_POST['search']);
